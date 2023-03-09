@@ -54,23 +54,30 @@ WebClient는 RestTemplate를 대체하는 HTTP 클라이언트입니다.
   - WebClient.Builder API 사용
     > DefaultWebClientBuilder 클래스를 사용하여 클라이언트를 설정  
     아래 예처럼 base를 설정하고 다른 객체에서 사용할 수 있다.
+
   ```java
-  import java.io.IOException;
-  import org.springframework.web.reactive.function.client.WebClient;
+    String url = "https://www.example.com/";
 
-  public class Example {
-      public static void main(String[] args) throws IOException {
-
-          String url = "https://www.example.com/";
-
-          WebClient webClient = WebClient.bilder()
-                                    .baseUrl(url)
-                                    .defaultCookie("cookie-name", "cookie-value")
-                                    .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + "...")
-                                    .build();
-      }
-  }
+    WebClient webClient = WebClient.bilder()
+                              .baseUrl(url)
+                              .defaultCookie("cookie-name", "cookie-value")
+                              .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + "...")
+      
   ```
 
+  - 위에서 설정해준 base를 사용하는 법
 
+  ```java
+    webClient.get()
+            .uri(UriBuilder -> UriBuilder.path("/.../...").queryParam("key", value).build())
+            .retrieve()
+            .toEntity()
+            .build(exampleDTO.class)
+            .block();
+  ```
+
+## Note
+- 2023-03-09 첫 발행
+  > 정산 시스템을 하며 현재회사에서 서비스하고있는 서비스서버들과에 API를 통신을 위해 사용한 WebClient를 정리해보았다.  
+  다음기회에 더 깊게 공부해봐야겠다.
 
